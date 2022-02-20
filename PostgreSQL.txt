@@ -1,0 +1,74 @@
+# Стандартные команды
+
+# Подключение postgres
+sudo -i -u postgres
+# Создание базы данных
+createdb mtuci
+# Удаление базы данных
+dropdb mtuci
+# Переход в режим psql
+psql
+# Подключение базы данных
+\c mtuci
+# Просмотр содержимого
+\dt
+# Создание столбца
+CREATE TABLE student_group (id SERIAL PRIMARY KEY, numb varchar NOT NULL, chair varchar NOT NULL);
+# Удаление
+DROP TABLE student_group;
+# Добавление записи в таблицу
+INSERT INTO student_group (numb, chair) VALUES ('БЗС1901', 'СиСС');
+INSERT INTO student_group (numb, chair) VALUES ('БЗС1902', 'СиСС');
+# Выборка из таблицы
+SELECT chair FROM student_group WHERE numb='БЗС1901';
+# Выборка всего
+SELECT * FROM student_group;
+SELECT chair FROM student_group *;
+# Обновление таблцы
+UPDATE student_group SET numb='БЗС1901' WHERE chair='СиСС';
+# ALTER TABLE
+ALTER TABLE student_group DROP CONSTRAINT student_group_pkey;
+ALTER TABLE student_group ADD CONSTRAINT student_group_pkey PRIMARY KEY(numb);
+# Связь между таблицами
+CREATE TABLE student(id SERIAL PRIMARY KEY, full_name varchar NOT NULL, passport varchar(10) NOT NULL, group_numb varchar REFERENCES student_group(numb));
+
+
+# Создание и заполнение таблиц
+
+CREATE TABLE kaf (
+    id SERIAL,
+    kafn varchar NOT NULL PRIMARY KEY,
+    dekn varchar NOT NULL
+);
+
+CREATE TABLE sgr (
+    id SERIAL,
+    grn varchar NOT NULL PRIMARY KEY,
+    kafn1 varchar NOT NULL,
+    FOREIGN KEY (kafn1) REFERENCES kaf (kafn)
+);
+
+CREATE TABLE std (
+    id SERIAL,
+    sn varchar NOT NULL,
+    pass varchar NOT NULL,
+    grn1 varchar NOT NULL,
+    FOREIGN KEY (grn1) REFERENCES sgr (grn)
+);
+
+INSERT INTO kaf (kafn, dekn) VALUES ('НТС', 'СиСС');
+INSERT INTO kaf (kafn, dekn) VALUES ('ОТС', 'РиТ');
+INSERT INTO sgr (grn, kafn1) VALUES ('БЗС1901', 'НТС');
+INSERT INTO sgr (grn, kafn1) VALUES ('БЗС1902', 'НТС');
+INSERT INTO std (sn, pass, grn1) VALUES ('Медведева Наталья', '4798834604', 'БЗС1901');
+INSERT INTO std (sn, pass, grn1) VALUES ('Ахматова Анна', '4426243050', 'БЗС1901');
+INSERT INTO std (sn, pass, grn1) VALUES ('Зубарев Василий', '4067319788', 'БЗС1901');
+INSERT INTO std (sn, pass, grn1) VALUES ('Северов Петр', '4682173118', 'БЗС1901');
+INSERT INTO std (sn, pass, grn1) VALUES ('Степанишина Светлана', '4755793428', 'БЗС1901');
+INSERT INTO std (sn, pass, grn1) VALUES ('Ягубов Степан', '4241867914', 'БЗС1902');
+INSERT INTO std (sn, pass, grn1) VALUES ('Зарица Илья', '4533182454', 'БЗС1902');
+INSERT INTO std (sn, pass, grn1) VALUES ('Бузыцков Павел', '4915755817', 'БЗС1902');
+INSERT INTO std (sn, pass, grn1) VALUES ('Глухова Марианна', '4839227323', 'БЗС1902');
+INSERT INTO std (sn, pass, grn1) VALUES ('Каржова Вера', '4799647608', 'БЗС1902');
+
+
